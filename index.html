@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF8" />
+<meta name="viewport" content="width=device-width, initialscale=1.0" />
+<title>EG Treasures Perfumes</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: #fafafa;
+        color: #222;
+    }
+
+    header {
+        background: #111;
+        color: white;
+        padding: 30px 20px;
+        text-align: center;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 35px;
+        letter-spacing: 1px;
+    }
+
+    header p {
+        margin: 8px 0 0;
+        opacity: 0.8;
+        font-size: 15px;
+    }
+
+    .products {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        padding: 30px;
+        max-width: 1300px;
+        margin: auto;
+    }
+
+    .product {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        cursor: pointer;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .product:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+    }
+
+    .product img {
+        width: 100%;
+        height: 240px;
+        object-fit: cover;
+    }
+
+    .productinfo {
+        padding: 15px;
+    }
+
+    .productinfo h3 {
+        margin: 0 0 8px;
+        font-size: 17px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .productinfo p {
+        margin: 0;
+        font-size: 15px;
+        color: #444;
+        font-weight: bold;
+    }
+
+    footer {
+        background: #111;
+        color: white;
+        padding: 20px;
+        text-align: center;
+        font-size: 14px;
+        margin-top: 30px;
+    }
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>EG Treasures</h1>
+    <p>Premium Perfumes and Essential Oils</p>
+    <p>Address: Elhossary, 6th October | Phone: +20 111 511 9811 | Email: hello@egtreasures.store</p>
+</header>
+
+<div class="products" id="products"></div>
+
+<script>
+const imageFiles = [
+"212-Heroes-Forever-Young-600x600.jpeg.webp",
+"742ad8cd-472e-4d52-b04b-8709eb810270-600x600.jpg.webp",
+"Acqua-Di-Gio-EDT-1-600x600.jpeg.webp",
+"agdfsd-600x600.png.webp",
+"ajtfdee-600x600.png.webp",
+"Allure-Homme-EDT-100ML-600x600.jpeg.webp",
+"Armani-Code-Le-Parfum-125ML-600x600.jpeg.webp",
+"Bad-Boy-Gold-Fantasy-600x600.jpeg.webp",
+"Bleu-De-Chanel-EDT-150ML-600x600.jpeg.webp",
+"Bleu-De-Chanel-Parfum-600x600.jpeg.webp",
+"Burning-Rose-Carolina-Herrera-600x600.jpeg.webp",
+"calvin-klein-intense-euphoria-600x600.jpg.webp",
+"Calvin-Klein-One-EDT-100ML-600x600.jpeg.webp",
+"Carolina-Herrera-Bad-Boy-Blue-EDP-100ML-600x600.jpeg.webp",
+"carolina-herrera-bad-boy-extreme-edp-100ml-600x600.jpeg.webp",
+"Carolina-Herrera-Bad-Boy-Le-Parfum-100ML-600x600.jpeg.webp",
+"Chanel-Coco-Mademoiselle-EDP-Intense-50ML-600x600.jpeg.webp",
+"Chanel-Coco-Mademoiselle-Leau-Privee-600x600.jpeg.webp",
+"Chanel-Coco-Mademoiselle-LEau-Privee-Eau-Pour-la-Nuit-600x600.jpeg.webp",
+"CK-be-600x600.png.webp",
+"coco-mademoiselle-600x600.png-2.webp",
+"coco-mademoiselle-600x600.png.webp",
+"Creed-Absolu-Aventus-600x600.jpg.webp",
+"Creed-centaurus-600x600.png.webp",
+"creed-delphinus-600x600.png.webp",
+"creed-millesime-1849-600x600.jpeg.webp",
+"creed-queen-of-silk-600x600.png.webp",
+"Creed-Royal-Mayfair-600x600.png.webp",
+"Creed-Royal-Oud-EDP-120ML-600x600.jpeg.webp",
+"Dior-Fahrenheit-Parfum-EDP-75ML-600x600.jpeg.webp",
+"Dior-Joy-Intense-EDP-60ML-600x600.jpeg.webp",
+"Dior-Poison-Girl-EDT-100ML-600x600.jpeg.webp",
+"Dior-Sauvage-Elixir-600x600.jpeg.webp",
+"Dior-Sauvage-Parfum-100ML-600x600.jpeg.webp",
+"e6fdeed9-b288-4f98-982c-daa430d4ddb3-600x600.jpg.webp",
+"Emporio-Armani-Stronger-With-You-Oud-EDP-100ML.jpeg.webp",
+"ephorea-men-600x600.png.webp",
+"Giorgio-Armani-Acqua-Di-Gio-600x600.jpeg.webp",
+"good-girl-600x600.png.webp",
+"Good-Girl-Gold-Fantasy-600x600.jpeg.webp",
+"Good-Girl-Supreme-600x600.jpeg.webp",
+"grey-vetiver-600x600.png.webp",
+"hds-600x600.png.webp",
+"hfdgd-600x600.png.webp",
+"jfdgsdd-600x600.png.webp",
+"jrfs-600x600.png.webp",
+"lacoust-blue-600x600.png.webp",
+"lacoust-green-600x600.png.webp",
+"Miss-Dior-EDP-100ML-600x600.jpg.webp",
+"N1-De-Chanel-LEau-Rouge-100ML-600x600.jpeg.webp",
+"noir-anthracite-600x600.png.webp",
+"oud-wood-intens-600x600.png.webp",
+"PHOTO-2024-05-04-20-00-12-600x600.jpg.webp",
+"PHOTO-2024-05-12-17-45-08-600x600.jpg.webp",
+"rose-prick-600x600.png.webp",
+"Stronger-With-You-Amber-EDP-100ML-600x600.jpeg.webp",
+"tobacco-oud-600x600.png.webp",
+"Tom-Ford-Black-Orchid--600x600.jpeg.webp",
+"tom-ford-coffee-rose-edp-100ml-79-600x600.jpeg.webp",
+"Tom-Ford-Electric-Cherry-600x600.jpeg.webp",
+"Tom-Ford-Orchid-Facon-600x600.jpeg.webp",
+"Tom-Ford-Rive-dAmbre-600x600.jpg.webp",
+"tucsan-leather-intense-600x600.png.webp",
+"YSL-Black-Opium-Neon-EDP-75ML-600x600.jpeg.webp",
+"YSL-Y-Le-Parfum-Intense-600x600.jpeg.webp",
+"yves-saint-laurent-libre-le-parfum-EDP-90ML-600x600.jpeg.webp"
+];
+
+function cleanName(file) {
+    return file
+        .replace(/-/g, " ")
+        .replace(/600x600|jpeg|jpg|png|webp/gi, "")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+function randomPrice() {
+    return Math.floor(Math.random() * (3000 - 1500 + 1)) + 1500;
+}
+
+const container = document.getElementById("products");
+
+imageFiles.forEach(file => {
+    const title = cleanName(file);
+    const price = randomPrice();
+    const imgUrl = "http://egtreasure.store/assets/" + file;
+
+    const div = document.createElement("div");
+    div.className = "product";
+
+    div.onclick = () => {
+        const message = encodeURIComponent(`Hello I want to order: ${title} Price: EGP ${price}`);
+        window.location.href = `https://wa.me/2011151198111?text=${message}`;
+    };
+
+    div.innerHTML = `
+        <img src="${imgUrl}">
+        <div class="productinfo">
+            <h3>${title}</h3>
+            <p>EGP ${price}</p>
+        </div>
+    `;
+
+    container.appendChild(div);
+});
+</script>
+
+<footer>
+    EG Treasures Perfumes and Oils © 2025
+</footer>
+
+</body>
+</html>
