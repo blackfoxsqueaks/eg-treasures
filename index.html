@@ -102,10 +102,7 @@
 <script>
 const imageFiles = [
 "212-Heroes-Forever-Young-600x600.jpeg.webp",
-"742ad8cd-472e-4d52-b04b-8709eb810270-600x600.jpg.webp",
 "Acqua-Di-Gio-EDT-1-600x600.jpeg.webp",
-"agdfsd-600x600.png.webp",
-"ajtfdee-600x600.png.webp",
 "Allure-Homme-EDT-100ML-600x600.jpeg.webp",
 "Armani-Code-Le-Parfum-125ML-600x600.jpeg.webp",
 "Bad-Boy-Gold-Fantasy-600x600.jpeg.webp",
@@ -143,10 +140,6 @@ const imageFiles = [
 "Good-Girl-Gold-Fantasy-600x600.jpeg.webp",
 "Good-Girl-Supreme-600x600.jpeg.webp",
 "grey-vetiver-600x600.png.webp",
-"hds-600x600.png.webp",
-"hfdgd-600x600.png.webp",
-"jfdgsdd-600x600.png.webp",
-"jrfs-600x600.png.webp",
 "lacoust-blue-600x600.png.webp",
 "lacoust-green-600x600.png.webp",
 "Miss-Dior-EDP-100ML-600x600.jpg.webp",
@@ -183,8 +176,15 @@ function randomPrice() {
 
 const container = document.getElementById("products");
 
+function titleCase(str) {
+    return str.split(" ").map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    ).join(" ");
+}
+
 imageFiles.forEach(file => {
-    const title = cleanName(file);
+    let title = cleanName(file);
+    title = titleCase(title); // Capitalize first letter of each word
     const price = randomPrice();
     const imgUrl = "http://egtreasure.store/assets/" + file;
 
@@ -192,7 +192,7 @@ imageFiles.forEach(file => {
     div.className = "product";
 
     div.onclick = () => {
-        const message = encodeURIComponent(`Hello I want to order: ${title} Price: EGP ${price}`);
+        const message = encodeURIComponent(`Hello I want to order: ${title} Price: EGP ${price} ${imgUrl}`);
         window.location.href = `https://wa.me/2011151198111?text=${message}`;
     };
 
@@ -206,6 +206,7 @@ imageFiles.forEach(file => {
 
     container.appendChild(div);
 });
+
 </script>
 
 <footer>
