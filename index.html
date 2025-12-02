@@ -1,91 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF8" />
-<meta name="viewport" content="width=device-width, initialscale=1.0" />
-<title>EG Treasures Perfumes</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EG Treasures Perfumes & Oils</title>
 <style>
-    body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background: #fafafa;
-        color: #222;
-    }
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fafafa;
+    color: #222;
+}
 
-    header {
-        background: #111;
-        color: white;
-        padding: 30px 20px;
-        text-align: center;
-    }
+header {
+    background: #111;
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+}
 
-    header h1 {
-        margin: 0;
-        font-size: 35px;
-        letter-spacing: 1px;
-    }
+header h1 {
+    margin: 0;
+    font-size: 35px;
+    letter-spacing: 1px;
+}
 
-    header p {
-        margin: 8px 0 0;
-        opacity: 0.8;
-        font-size: 15px;
-    }
+header p {
+    margin: 8px 0 0;
+    opacity: 0.8;
+    font-size: 15px;
+}
 
-    .products {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
-        padding: 30px;
-        max-width: 1300px;
-        margin: auto;
-    }
+.category-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    margin: 40px 0 20px;
+    color: #111;
+}
 
-    .product {
-        background: white;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        cursor: pointer;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
+.products {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 0 30px 30px 30px;
+    max-width: 1300px;
+    margin: auto;
+}
 
-    .product:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 4px 14px rgba(0,0,0,0.15);
-    }
+.product {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-    .product img {
-        width: 100%;
-        height: 240px;
-        object-fit: cover;
-    }
+.product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+}
 
-    .productinfo {
-        padding: 15px;
-    }
+.product img {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+}
 
-    .productinfo h3 {
-        margin: 0 0 8px;
-        font-size: 17px;
-        font-weight: bold;
-        color: #333;
-    }
+.productinfo {
+    padding: 15px;
+}
 
-    .productinfo p {
-        margin: 0;
-        font-size: 15px;
-        color: #444;
-        font-weight: bold;
-    }
+.productinfo h3 {
+    margin: 0 0 8px;
+    font-size: 17px;
+    font-weight: bold;
+    color: #333;
+}
 
-    footer {
-        background: #111;
-        color: white;
-        padding: 20px;
-        text-align: center;
-        font-size: 14px;
-        margin-top: 30px;
-    }
+.productinfo p {
+    margin: 0;
+    font-size: 15px;
+    color: #444;
+    font-weight: bold;
+}
+
+footer {
+    background: #111;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 30px;
+}
 </style>
 </head>
 
@@ -97,11 +105,65 @@
     <p>Address: Elhossary, 6th October | Phone: +201151198111 | Email: hello@egtreasures.store</p>
 </header>
 
-<div class="products" id="products"></div>
+<!-- Perfumes Section -->
+<div class="category-title">Perfumes</div>
+<div class="products" id="perfumes"></div>
+
+<!-- Essential Oils Section -->
+<div class="category-title">Essential Oils</div>
+<div class="products" id="oils"></div>
 
 <script>
-const imageFiles = [
-"212-Heroes-Forever-Young-600x600.jpeg.webp",
+// Helper functions
+function cleanName(file) {
+    return file
+        .replace(/-/g, " ")
+        .replace(/600x600|jpeg|jpg|png|webp/gi, "")
+        .replace(/\s+/g, " ")
+        .trim();
+}
+
+function randomPrice(min=1500, max=3000) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function titleCase(str) {
+    return str.split(" ").map(word => 
+        word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    ).join(" ");
+}
+
+function renderProducts(files, containerId) {
+    const container = document.getElementById(containerId);
+    files.forEach(file => {
+        let title = cleanName(file);
+        title = titleCase(title);
+        const price = randomPrice();
+        const imgUrl = "https://egtreasures.store/assets/" + file;
+
+        const div = document.createElement("div");
+        div.className = "product";
+
+        div.onclick = () => {
+            const message = encodeURIComponent(`Hello I want to order: ${title} Price: EGP ${price} ${imgUrl}`);
+            window.location.href = `https://wa.me/201151198111?text=${message}`;
+        };
+
+        div.innerHTML = `
+            <img src="${imgUrl}">
+            <div class="productinfo">
+                <h3>${title}</h3>
+                <p>EGP ${price}</p>
+            </div>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+// Arrays
+const perfumes = [
+    "212-Heroes-Forever-Young-600x600.jpeg.webp",
 "Acqua-Di-Gio-EDT-1-600x600.jpeg.webp",
 "Allure-Homme-EDT-100ML-600x600.jpeg.webp",
 "Armani-Code-Le-Parfum-125ML-600x600.jpeg.webp",
@@ -162,50 +224,15 @@ const imageFiles = [
 "yves-saint-laurent-libre-le-parfum-EDP-90ML-600x600.jpeg.webp"
 ];
 
-function cleanName(file) {
-    return file
-        .replace(/-/g, " ")
-        .replace(/600x600|jpeg|jpg|png|webp/gi, "")
-        .replace(/\s+/g, " ")
-        .trim();
-}
+const oils = [
+    "Pack of 4.jpg",
+    "Pack of 3.jpg",
+    "Pack of 2.jpg",
+];
 
-function randomPrice() {
-    return Math.floor(Math.random() * (3000 - 1500 + 1)) + 1500;
-}
-
-const container = document.getElementById("products");
-
-function titleCase(str) {
-    return str.split(" ").map(word => 
-        word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-    ).join(" ");
-}
-
-imageFiles.forEach(file => {
-    let title = cleanName(file);
-    title = titleCase(title); // Capitalize first letter of each word
-    const price = randomPrice();
-    const imgUrl = "https://egtreasures.store/assets/" + file;
-
-    const div = document.createElement("div");
-    div.className = "product";
-
-    div.onclick = () => {
-        const message = encodeURIComponent(`Hello I want to order: ${title} Price: EGP ${price} ${imgUrl}`);
-        window.location.href = `https://wa.me/201151198111?text=${message}`;
-    };
-
-    div.innerHTML = `
-        <img src="${imgUrl}">
-        <div class="productinfo">
-            <h3>${title}</h3>
-            <p>EGP ${price}</p>
-        </div>
-    `;
-
-    container.appendChild(div);
-});
+// Render both categories
+renderProducts(perfumes, "perfumes");
+renderProducts(oils, "oils");
 
 </script>
 
