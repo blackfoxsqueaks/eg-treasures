@@ -4,123 +4,131 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>EG Treasures Perfumes & Oils</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Luxury Fonts -->
+
 <style>
+/* Global */
 body {
     margin: 0;
-    font-family: 'Roboto', sans-serif;
-    background: #fdfcf9;
+    font-family: 'Inter', sans-serif;
+    background: #faf7f2;
     color: #222;
 }
 
-/* Sexy Header */
+/* HEADER */
 header {
-    background: linear-gradient(135deg, #1a1a1a, #3d1a47);
-    color: #fff;
-    padding: 60px 20px 50px;
+    padding: 10px 20px 20px;
     text-align: center;
-    position: relative;
-    overflow: hidden;
-    box-shadow: inset 0 0 50px rgba(255,255,255,0.05);
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    background: #ffffffcc;
+    backdrop-filter: blur(6px);
+}
+
+header img {
+    width: 130px;
+    height: auto;
 }
 
 header h1 {
-    margin: 0;
     font-family: 'Playfair Display', serif;
-    font-size: 60px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    background: linear-gradient(90deg, #ffcc99, #ff99cc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-size: 44px;
+    margin: 4px 0 0px;
+    letter-spacing: 2px;
 }
 
 header p {
-    margin: 6px 0;
-    font-size: 16px;
-    opacity: 0.85;
+    margin: 4px 0;
+    font-size: 18px;
+    opacity: 0.75;
 }
 
+/* CATEGORY TITLE */
 .category-title {
     text-align: center;
-    font-size: 36px;
-    font-family: 'Playfair Display', serif;
-    font-weight: 700;
+    font-size: 34px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
     margin: 60px 0 25px;
-    color: #3d1a47;
+    color: #2c1735;
 }
 
+/* PRODUCT GRID */
 .products {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 25px;
-    padding: 0 30px 50px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 35px;
+    padding: 0 30px 60px;
     max-width: 1300px;
     margin: auto;
 }
 
+/* PRODUCT CARD */
 .product {
-    background: white;
-    border-radius: 14px;
+    background: #fff;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
     cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 12px 35px rgba(0,0,0,0.08);
+    transition: all 0.35s ease;
+    position: relative;
 }
 
 .product:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
 }
 
 .product img {
     width: 100%;
-    height: 260px;
+    height: 300px;
     object-fit: cover;
-    transition: transform 0.3s ease;
+    transition: transform 0.35s ease;
 }
 
 .product:hover img {
-    transform: scale(1.05);
+    transform: scale(1.06);
 }
 
+/* PRODUCT TEXT */
 .productinfo {
-    padding: 20px;
+    padding: 22px;
     text-align: center;
 }
 
 .productinfo h3 {
-    margin: 0 0 10px;
+    margin: 0 0 12px;
     font-size: 18px;
-    font-weight: 500;
-    color: #333;
+    font-weight: 600;
+    color: #222;
+    letter-spacing: 0.5px;
 }
 
 .productinfo p {
     margin: 0;
-    font-size: 16px;
-    color: #3d1a47;
+    font-size: 17px;
+    color: #2c1735;
     font-weight: 700;
-    letter-spacing: 0.5px;
 }
 
+/* FOOTER */
 footer {
-    background: #1a1a1a;
-    color: white;
-    padding: 25px;
+    font-family: 'Inter', sans-serif;
+    color: black;
+    padding: 30px;
     text-align: center;
     font-size: 14px;
-    margin-top: 40px;
+    letter-spacing: 1px;
+    margin-top: 80px;
 }
+
 </style>
 </head>
 
 <body>
 
 <header>
-    <h1>EG Treasures</h1>
-    <p>Luxury Perfumes & Essential Oils</p>
-    <p>Elhossary, 6th October | +201151198111 | hello@egtreasures.store</p>
+    <img src="https://iili.io/fz0FlG2.md.png" alt="EG Treasures Logo">
 </header>
 
 <div class="category-title">Perfumes</div>
@@ -130,7 +138,7 @@ footer {
 <div class="products" id="oils"></div>
 
 <script>
-// Predefined static prices (your existing object)
+/* --- Your Prices Object (unchanged) --- */
 const prices = {
   "212-Heroes-Forever-Young-600x600.jpeg.webp": 2593,
   "Acqua-Di-Gio-EDT-1-600x600.jpeg.webp": 1721,
@@ -196,17 +204,17 @@ const prices = {
   "Berry Pack of 2.jpg": 873
 };
 
-// Render products using filename as key
+/* Format Cards */
 function renderProducts(files, containerId) {
     const container = document.getElementById(containerId);
+
     files.forEach(file => {
-        // Use clean title for display
-        let title = file.replace(/600x600|jpeg|jpg|png|webp/gi, "").replace(/-/g, " ").trim();
+        let title = file.replace(/600x600|jpeg|jpg|png|webp/gi, "")
+                        .replace(/-/g, " ")
+                        .trim();
         title = title.replace(/\b\w/g, c => c.toUpperCase());
 
-        // Use full filename as key for price lookup
         const price = prices[file] || 2000;
-
         const imgUrl = "https://egtreasures.store/assets/" + file;
 
         const div = document.createElement("div");
@@ -229,7 +237,6 @@ function renderProducts(files, containerId) {
     });
 }
 
-// Your arrays
 const perfumes = [
     "212-Heroes-Forever-Young-600x600.jpeg.webp",
 "Acqua-Di-Gio-EDT-1-600x600.jpeg.webp",
@@ -298,14 +305,13 @@ const oils = [
     "Berry Pack of 2.jpg",
 ];
 
-// Render
 renderProducts(perfumes, "perfumes");
 renderProducts(oils, "oils");
 </script>
 
-
 <footer>
     EG Treasures © 2025
+    <p>Elhossary, 6th October | +201151198111 | hello@egtreasures.store</p>
 </footer>
 
 </body>
