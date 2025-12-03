@@ -18,30 +18,44 @@ body {
 
 /* HEADER */
 header {
-    padding: 10px 20px 20px;
+    padding: 24px 20px 8px;
     text-align: center;
-    border-bottom: 1px solid rgba(0,0,0,0.08);
-    background: #ffffffcc;
-    backdrop-filter: blur(6px);
+    background: rgba(255, 255, 255, 0.72);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+    position: sticky;
+    top: 0;
+    z-index: 50;
 }
 
-header img {
-    width: 130px;
+header .brand-logo {
+    width: 105px;
     height: auto;
+        filter: drop-shadow(0px 3px 6px rgba(0,0,0,0.08));
 }
 
-header h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 44px;
-    margin: 4px 0 0px;
-    letter-spacing: 2px;
+header .tagline {
+    text-align: center;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    margin-bottom: 24px;
+    margin-top: 6px;
+    margin-right: 32px;
+    margin-left: 32px;
+    color: grey;
 }
 
-header p {
-    margin: 4px 0;
-    font-size: 18px;
-    opacity: 0.75;
+/* Micro separator */
+header::after {
+    content: "";
+    display: block;
+    width: 70%;
+    height: 1px;
+    margin: 18px auto 0;
+    background: linear-gradient(to right, transparent, rgba(0,0,0,0.1), transparent);
 }
+
 
 /* CATEGORY TITLE */
 .category-title {
@@ -49,7 +63,19 @@ header p {
     font-size: 34px;
     font-family: 'Inter', sans-serif;
     font-weight: 600;
-    margin: 60px 0 25px;
+    margin: 32px 0 0px;
+    color: #2c1735;
+}
+
+.category-desc {
+    text-align: center;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 200;
+    margin-bottom: 24px;
+    margin-top: 6px;
+    margin-right: 32px;
+    margin-left: 32px;
     color: #2c1735;
 }
 
@@ -58,7 +84,7 @@ header p {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 35px;
-    padding: 0 30px 60px;
+    padding: 0 30px 0px;
     max-width: 1300px;
     margin: auto;
 }
@@ -111,6 +137,37 @@ header p {
     font-weight: 700;
 }
 
+
+.controls {
+    max-width: 1300px;
+    margin: 25px auto 10px;
+    display: flex;
+    gap: 12px;
+    padding: 0 30px;
+}
+
+.controls select,
+.controls input {
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.15);
+    font-size: 15px;
+    flex: 1;
+    outline: none;
+    background: #fff;
+    transition: 0.2s ease;
+}
+
+.controls input {
+    flex: 2;
+}
+
+.controls select:hover,
+.controls input:hover {
+    border-color: rgba(0,0,0,0.25);
+}
+
+
 /* FOOTER */
 footer {
     font-family: 'Inter', sans-serif;
@@ -128,14 +185,28 @@ footer {
 <body>
 
 <header>
-    <img src="https://iili.io/fz0FlG2.md.png" alt="EG Treasures Logo">
+    <img src="https://iili.io/fz0vHPt.png" alt="EG Treasures Logo" class="brand-logo">
+    <div class="tagline">Your online destination for top quality perfumes and oils</div>
 </header>
 
-<div class="category-title">Perfumes</div>
-<div class="products" id="perfumes"></div>
+<div class="controls">
+    <select id="sortSelect">
+        <option value="default">Default</option>
+        <option value="low">Price: Low to High</option>
+        <option value="high">Price: High to Low</option>
+    </select>
+
+    <input type="text" id="searchInput" placeholder="Search perfumes or oils...">
+</div>
+
 
 <div class="category-title">Essential Oils</div>
+<div class="category-desc">Explore our range of luxurious and aromatic perfume oils</div>
 <div class="products" id="oils"></div>
+
+<div class="category-title">Perfumes</div>
+<div class="category-desc">Explore top-notch perfumes from various designer for both men and women</div>
+<div class="products" id="perfumes"></div>
 
 <script>
 /* --- Your Prices Object (unchanged) --- */
@@ -207,6 +278,7 @@ const prices = {
 /* Format Cards */
 function renderProducts(files, containerId) {
     const container = document.getElementById(containerId);
+    container.innerHTML = "";
 
     files.forEach(file => {
         let title = file.replace(/600x600|jpeg|jpg|png|webp/gi, "")
@@ -225,6 +297,9 @@ function renderProducts(files, containerId) {
             window.location.href = `https://wa.me/201151198111?text=${message}`;
         };
 
+        div.setAttribute("data-title", title.toLowerCase());
+        div.setAttribute("data-price", price);
+
         div.innerHTML = `
             <img src="${imgUrl}">
             <div class="productinfo">
@@ -237,8 +312,45 @@ function renderProducts(files, containerId) {
     });
 }
 
+
+function applyFilters() {
+    const sortMode = document.getElementById("sortSelect").value;
+    const query = document.getElementById("searchInput").value.trim().toLowerCase();
+
+    const categories = [
+        { id: "oils", files: oils },
+        { id: "perfumes", files: perfumes }
+    ];
+
+    categories.forEach(cat => {
+        let list = [...cat.files];
+
+        // Filter by search
+        if (query !== "") {
+            list = list.filter(file => {
+                const t = file.toLowerCase();
+                return t.includes(query);
+            });
+        }
+
+        // Sort
+        if (sortMode === "low") {
+            list.sort((a, b) => (prices[a] || 2000) - (prices[b] || 2000));
+        } else if (sortMode === "high") {
+            list.sort((a, b) => (prices[b] || 2000) - (prices[a] || 2000));
+        }
+
+        // Render
+        renderProducts(list, cat.id);
+    });
+}
+
+document.getElementById("sortSelect").addEventListener("change", applyFilters);
+document.getElementById("searchInput").addEventListener("input", applyFilters);
+
+
 const perfumes = [
-    "212-Heroes-Forever-Young-600x600.jpeg.webp",
+"212-Heroes-Forever-Young-600x600.jpeg.webp",
 "Acqua-Di-Gio-EDT-1-600x600.jpeg.webp",
 "Allure-Homme-EDT-100ML-600x600.jpeg.webp",
 "Armani-Code-Le-Parfum-125ML-600x600.jpeg.webp",
@@ -283,8 +395,6 @@ const perfumes = [
 "N1-De-Chanel-LEau-Rouge-100ML-600x600.jpeg.webp",
 "noir-anthracite-600x600.png.webp",
 "oud-wood-intens-600x600.png.webp",
-"PHOTO-2024-05-04-20-00-12-600x600.jpg.webp",
-"PHOTO-2024-05-12-17-45-08-600x600.jpg.webp",
 "rose-prick-600x600.png.webp",
 "Stronger-With-You-Amber-EDP-100ML-600x600.jpeg.webp",
 "tobacco-oud-600x600.png.webp",
@@ -300,13 +410,12 @@ const perfumes = [
 ];
 
 const oils = [
+        "Nature Glow Pack of 3.jpg",
     "Nature's Oil Pack of 4.jpg",
-    "Nature Glow Pack of 3.jpg",
     "Berry Pack of 2.jpg",
 ];
 
-renderProducts(perfumes, "perfumes");
-renderProducts(oils, "oils");
+applyFilters();
 </script>
 
 <footer>
